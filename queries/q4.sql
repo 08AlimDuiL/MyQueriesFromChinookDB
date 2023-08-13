@@ -1,19 +1,19 @@
- -- 1. Покажите все данные заказов покупателя (номер 13) и отсортируйте стоимость по возрастанию.
+-- 1. Покажите все данные заказов покупателя (номер 13) и отсортируйте стоимость по возрастанию.
    SELECT * FROM chinook.customer 
    INNER JOIN chinook.invoice 
    ON customer.CustomerId = invoice.CustomerId
    WHERE chinook.customer.CustomerId=13 AND chinook.invoice.CustomerId=13;
 
- -- 2. Посчитайте количество треков в каждом альбоме. В результате вывести ID альбома, имя альбома и кол-во треков. 
-   SELECT 
-	   chinook.track.AlbumId,
+-- 2. Посчитайте количество треков в каждом альбоме. В результате вывести ID альбома, имя альбома и кол-во треков. 
+  SELECT 
+	  chinook.track.AlbumId,
       chinook.album.Title, 
       COUNT(chinook.album.Title) AS total
    FROM chinook.album JOIN chinook.track
    ON chinook.track.AlbumId = chinook.album.AlbumId
    GROUP BY chinook.track.AlbumId ;
    
- -- 3. Покажите имя, фамилию, кол-во и стоимость покупок по каждому клиенту. Столбцы кол-во назвать quantity, стоимость - sum.
+-- 3. Покажите имя, фамилию, кол-во и стоимость покупок по каждому клиенту. Столбцы кол-во назвать quantity, стоимость - sum.
    SELECT 
 	   customer.FirstName,
       customer.LastName, 
@@ -24,12 +24,12 @@
    ON customer.CustomerId = invoice.CustomerId
    GROUP BY customer.CustomerId;
    
- -- 4. Посчитайте общую сумму продаж в США в 1 квартале 2012 года. Присвойте любой псевдоним столбцу.
+-- 4. Посчитайте общую сумму продаж в США в 1 квартале 2012 года. Присвойте любой псевдоним столбцу.
   SELECT SUM(invoice.Total) AS total 
   FROM chinook.invoice
   WHERE 
     BillingCountry = "USA"
-       AND 
+    AND 
     (InvoiceDate BETWEEN DATE '2012-01-01' AND DATE '2012-03-31');
 
   SELECT SUM(invoiceline.UnitPrice) AS total 
@@ -38,7 +38,7 @@
   ON invoiceline.InvoiceId = invoice.InvoiceId
   WHERE 
     BillingCountry = "USA"
-       AND 
+    AND 
     (InvoiceDate BETWEEN DATE '2012-01-01' AND DATE '2012-03-31');
 
     /*
@@ -54,7 +54,7 @@
   SELECT * FROM chinook.customer 
   LEFT JOIN chinook.employee
   ON chinook.customer.SupportRepId = chinook.employee.employeeId;
-   
+  
   SELECT * FROM chinook.customer 
   RIGHT JOIN chinook.employee
   ON chinook.customer.SupportRepId = chinook.employee.employeeId;
@@ -90,7 +90,7 @@
    AND  chinook.employee.FirstName IS NULL;
 -- Здесь условие соединения таблиц
 
- -- 7. Покажите количество и среднюю стоимость треков в каждом жанре. Вывести ID жанра, название жанра, количество и среднюю стоимость.
+-- 7. Покажите количество и среднюю стоимость треков в каждом жанре. Вывести ID жанра, название жанра, количество и среднюю стоимость.
 
   SELECT 
     chinook.genre.GenreId,
