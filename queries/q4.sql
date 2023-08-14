@@ -1,35 +1,42 @@
 -- 1. Покажите все данные заказов покупателя (номер 13) и отсортируйте стоимость по возрастанию.
-   SELECT * FROM chinook.customer 
-   INNER JOIN chinook.invoice 
-   ON customer.CustomerId = invoice.CustomerId
-   WHERE chinook.customer.CustomerId=13 AND chinook.invoice.CustomerId=13;
+  SELECT * 
+  FROM chinook.customer 
+  INNER JOIN chinook.invoice 
+  ON customer.CustomerId = invoice.CustomerId
+  WHERE chinook.customer.CustomerId=13 AND chinook.invoice.CustomerId=13;
 
--- 2. Посчитайте количество треков в каждом альбоме. В результате вывести ID альбома, имя альбома и кол-во треков. 
+/*
+  2. Посчитайте количество треков в каждом альбоме. В результате вывести ID альбома,
+  имя альбома и кол-во треков. 
+*/
   SELECT 
-	  chinook.track.AlbumId,
-      chinook.album.Title, 
-      COUNT(chinook.album.Title) AS total
-   FROM chinook.album JOIN chinook.track
-   ON chinook.track.AlbumId = chinook.album.AlbumId
-   GROUP BY chinook.track.AlbumId ;
-   
--- 3. Покажите имя, фамилию, кол-во и стоимость покупок по каждому клиенту. Столбцы кол-во назвать quantity, стоимость - sum.
-   SELECT 
-	   customer.FirstName,
-      customer.LastName, 
-      SUM(invoice.Total) AS sum,
-      COUNT(invoice.Total) AS quantity
-   FROM chinook.customer
-   INNER JOIN chinook.invoice
-   ON customer.CustomerId = invoice.CustomerId
-   GROUP BY customer.CustomerId;
-   
+    chinook.track.AlbumId,
+    chinook.album.Title, 
+    COUNT(chinook.album.Title) AS total
+  FROM chinook.album JOIN chinook.track
+  ON chinook.track.AlbumId = chinook.album.AlbumId
+  GROUP BY chinook.track.AlbumId ;
+  
+/*
+    3. Покажите имя, фамилию, кол-во и стоимость покупок по каждому клиенту.
+    Столбцы кол-во назвать quantity, стоимость - sum.
+*/
+  SELECT
+	  customer.FirstName,
+    customer.LastName, 
+    SUM(invoice.Total) AS sum,
+    COUNT(invoice.Total) AS quantity
+  FROM chinook.customer
+  INNER JOIN chinook.invoice
+  ON customer.CustomerId = invoice.CustomerId
+  GROUP BY customer.CustomerId;
+  
 -- 4. Посчитайте общую сумму продаж в США в 1 квартале 2012 года. Присвойте любой псевдоним столбцу.
   SELECT SUM(invoice.Total) AS total 
   FROM chinook.invoice
   WHERE 
     BillingCountry = "USA"
-    AND 
+  AND 
     (InvoiceDate BETWEEN DATE '2012-01-01' AND DATE '2012-03-31');
 
   SELECT SUM(invoiceline.UnitPrice) AS total 
@@ -38,24 +45,26 @@
   ON invoiceline.InvoiceId = invoice.InvoiceId
   WHERE 
     BillingCountry = "USA"
-    AND 
+  AND 
     (InvoiceDate BETWEEN DATE '2012-01-01' AND DATE '2012-03-31');
 
-    /*
-    5. Выполните запросы по очереди и ответьте на вопросы:
-    Вернут ли данные запросы одинаковый результат?  Ответы: Да или НЕТ. 
+/*
+  5. Выполните запросы по очереди и ответьте на вопросы:
+  Вернут ли данные запросы одинаковый результат?  Ответы: Да или НЕТ. 
 
     1.  Если ДА. Объяснить почему.
     2.  Если НЕТ. Объяснить почему. 
     3.  Какой запрос вернет больше строк? 
-    */
+*/
 
 -- НЕТ
-  SELECT * FROM chinook.customer 
+  SELECT * 
+  FROM chinook.customer 
   LEFT JOIN chinook.employee
   ON chinook.customer.SupportRepId = chinook.employee.employeeId;
   
-  SELECT * FROM chinook.customer 
+  SELECT * 
+  FROM chinook.customer 
   RIGHT JOIN chinook.employee
   ON chinook.customer.SupportRepId = chinook.employee.employeeId;
 
@@ -67,31 +76,33 @@
   на менеджерских позициях они не привязаны к customer
   */
 
-    /*
-    6. Выполните запросы по очереди и ответьте на вопросы:
-    Вернут ли данные запросы одинаковый результат? Ответы: Да или НЕТ. 
+/*
+  6. Выполните запросы по очереди и ответьте на вопросы:
+  Вернут ли данные запросы одинаковый результат? Ответы: Да или НЕТ. 
     1. Если ДА. Объяснить почему.
     2. Если НЕТ. Объяснить почему. 
     3. Какой запрос вернет больше строк ?
-    */
+*/
 
 -- НЕТ
-
-   SELECT * FROM chinook.customer 
-   LEFT JOIN chinook.employee
-   ON chinook.customer.SupportRepId = chinook.employee.employeeId
-   WHERE chinook.employee.FirstName IS NULL;
+  SELECT *
+  FROM chinook.customer 
+  LEFT JOIN chinook.employee
+  ON chinook.customer.SupportRepId = chinook.employee.employeeId
+  WHERE chinook.employee.FirstName IS NULL;
 -- Здесь условие  WHERE
 
-
-   SELECT * FROM chinook.customer
-   LEFT JOIN chinook.employee
-   ON chinook.customer.SupportRepId = chinook.employee.employeeId
-   AND  chinook.employee.FirstName IS NULL;
+  SELECT * 
+  FROM chinook.customer
+  LEFT JOIN chinook.employee
+  ON chinook.customer.SupportRepId = chinook.employee.employeeId
+  AND  chinook.employee.FirstName IS NULL;
 -- Здесь условие соединения таблиц
 
--- 7. Покажите количество и среднюю стоимость треков в каждом жанре. Вывести ID жанра, название жанра, количество и среднюю стоимость.
-
+/*
+  7. Покажите количество и среднюю стоимость треков в каждом жанре.
+  Вывести ID жанра, название жанра, количество и среднюю стоимость.
+*/
   SELECT 
     chinook.genre.GenreId,
     chinook.genre.Name, 
@@ -103,12 +114,11 @@
   GROUP BY chinook.track.GenreId, chinook.genre.Name
   ORDER BY total_count DESC;
 
-    /*
-    8. Покажите клиента, который потратил больше всего денег.
-    Для сокращения количества символов в запросе, используйте псевдонимы. 
-    Для ограничения количества записей используйте оператор "limit".
-    */
-
+/*
+  8. Покажите клиента, который потратил больше всего денег.
+  Для сокращения количества символов в запросе, используйте псевдонимы. 
+  Для ограничения количества записей используйте оператор "limit".
+*/
   SELECT  
 	  i.CustomerId AS customer, 
     FirstName, LastName,
@@ -120,10 +130,10 @@
   ORDER BY  max_total DESC 
   LIMIT 1;
 
-  /*
-    9. Покажите список названий альбомов, ID альбомов,
-    количество треков и общую цену альбомов для исполнителя Audioslave.
-  */
+/*
+  9. Покажите список названий альбомов, ID альбомов,
+  количество треков и общую цену альбомов для исполнителя Audioslave.
+*/
   SELECT
 	  AR.Name, 
     AL.Title,

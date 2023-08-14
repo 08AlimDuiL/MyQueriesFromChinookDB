@@ -1,29 +1,51 @@
 -- 1. Покажите фамилии и имя клиентов, у которых имя Mарк.
-   SELECT LastName, FirstName 
+   SELECT
+      LastName,
+      FirstName 
    FROM chinook.customer
    WHERE FirstName LIKE '%Mar_';
 
--- 2. Покажите название и размер треков в Мегабайтах, применив округление до 2 знаков и отсортировав по убыванию. Столбец назовите MB.
-   SELECT `Name`, ROUND(Bytes/1024/1024, 2)  AS MB  
+/*
+   2. Покажите название и размер треков в Мегабайтах, применив округление до 2 знаков и
+   отсортировав по убыванию. Столбец назовите MB.
+*/
+   SELECT
+      `Name`,
+      ROUND(Bytes/1024/1024, 2) AS MB  
    FROM chinook.track
    ORDER BY MB ASC;
 
--- 3. Покажите возраст сотрудников, на момент оформления на работу. Вывести фамилию, имя, возраст. дату оформления и день рождения. Столбец назовите age.
-   SELECT LastName, FirstName, HireDate, BirthDate, FLOOR(DATEDIFF(HireDate, BirthDate)/365) AS AGE
+/*  
+   3. Покажите возраст сотрудников, на момент оформления на работу. 
+   Вывести фамилию, имя, возраст. дату оформления и день рождения. Столбец назовите age.
+*/
+   SELECT
+      LastName,
+      FirstName,
+      HireDate,
+      BirthDate,
+      FLOOR(DATEDIFF(HireDate, BirthDate)/365) AS AGE
    FROM chinook.employee
    ORDER BY AGE DESC;
 
-   SELECT LastName, FirstName, TIMESTAMPDIFF(YEAR, BirthDate, HireDate)  AS AGE
+   SELECT
+      LastName,
+      FirstName,
+      TIMESTAMPDIFF(YEAR, BirthDate, HireDate) AS AGE
    FROM chinook.employee
    ORDER BY AGE;
 
 -- 4. Покажите покупателей-американцев без факса.
-   SELECT CustomerId FROM chinook.customer
+   SELECT CustomerId 
+   FROM chinook.customer
    WHERE Country LIKE 'USA' AND Fax IS NULL
    ORDER BY CustomerId;
 
 -- 5. Покажите почтовые адреса клиентов из домена gmail.com.
-   SELECT CustomerId, Email FROM chinook.customer
+   SELECT
+      CustomerId,
+      Email 
+   FROM chinook.customer
    WHERE Email LIKE '%gmail.com'
    ORDER BY CustomerId;
 
@@ -37,21 +59,51 @@
    FROM chinook.track;
 
 -- 8. Покажите название и длительность в секундах самой короткой песни. Столбец назвать sec.
-
+   SELECT
+      `Name`,
+      Milliseconds/1000 AS sec
+   FROM chinook.track
+   ORDER BY Milliseconds 
+   LIMIT 1;
 
 -- 9. Покажите средний возраст сотрудников, работающих в компании.
    SELECT FLOOR(AVG(DATEDIFF(HireDate, BirthDate)/365)) AS AGE
    FROM chinook.employee;
 
--- 10. Проведите аналитическую работу: узнайте фамилию, имя и компанию покупателя (номер 5). Сколько заказов он сделал и на какую сумму. Покажите 2 запроса Вашей работы.
-   SELECT LastName, FirstName, Company, CustomerId
+/* 
+   10. Проведите аналитическую работу: узнайте фамилию, имя и компанию покупателя (номер 5). 
+   Сколько заказов он сделал и на какую сумму. Покажите 2 запроса Вашей работы.
+*/
+   SELECT
+      LastName,
+      FirstName,
+      Company,
+      CustomerId
    FROM chinook.customer
    WHERE CustomerId = 5;
 
-   SELECT CustomerId, SUM(Total), COUNT(CustomerId) 
+   SELECT
+      CustomerId,
+      SUM(Total),
+      COUNT(CustomerId) 
    FROM chinook.invoice
    WHERE CustomerId = 5;
--- 11. Напишите запрос, определяющий количество треков, где ID плейлиста > 15. Назовите столбцы соответственно их расположения.
+/* 
+   11. Напишите запрос, определяющий количество треков, где ID плейлиста > 15. 
+   Назовите столбцы соответственно их расположения.
+*/
+   SELECT   
+      PlaylistId,
+      COUNT(PlaylistId) AS Count
+   FROM chinook.playlisttrack
+   WHERE PlaylistId > 15 group by PlaylistId;
 
-
--- 12. Найти все ID счет-фактур, в которых количество треков больше или равно 6 и меньше или равно 9
+/* 
+   12. Найти все ID счет-фактур, в которых количество треков больше или равно 6 и 
+   меньше или равно 9.
+*/
+   SELECT
+      InvoiceId, SUM(Quantity) AS sum
+   FROM chinook.invoiceline 
+   GROUP BY InvoiceId
+   HAVING sum BETWEEN 6 AND 9;
