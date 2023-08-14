@@ -166,19 +166,36 @@
     указанным в условии ON, и только те строки из другой таблицы, где объединяемые поля равны.
     */
 
-
     /*
         17. Покажите отделы, должности и количество работников в каждом отделе, 
         у которых руководящая должность. (Решить с помощью JOIN);
     */
-
+    SELECT 
+	    testdb.department.department, 
+        testdb.employee.Position,
+        COUNT(testdb.department.department) AS 'quantity'
+    FROM testdb.employee
+    JOIN testdb.department
+    ON testdb.employee.department = testdb.department.id
+    WHERE testdb.employee.Position LIKE '%руководитель%'
+    GROUP BY testdb.department.department;
     
     /*
         18. У нас в отделе тестирования хорошие новости! 
         Алёна стала руководителем тестирования и обещала устроить пир.
         Прежде чем ты отправишься праздновать,  нужно внести изменения в БД. Сделай это);
     */  
-
+    UPDATE testdb.employee
+    SET testdb.employee.Position = 'руководитель тестирования'
+    WHERE testdb.employee.ServiceId = 7;    
 
     -- 19. Выполни еще раз запрос № 17 и запиши в комментарии общее количество руководителей.
-
+    SELECT 
+	    testdb.department.department, 
+        testdb.employee.Position,
+        COUNT(testdb.department.department) AS 'quantity'
+    FROM testdb.employee
+    JOIN testdb.department
+    ON testdb.employee.department = testdb.department.id
+    WHERE testdb.employee.Position LIKE '%руководитель%'
+    GROUP BY testdb.department.department;
